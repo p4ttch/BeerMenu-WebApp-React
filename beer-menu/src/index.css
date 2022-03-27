@@ -46,7 +46,12 @@ header h1{
   text-align: center;
 }
 
-.search{
+.inputContainer{
+  width:100%;
+  max-width:600px;
+  margin:0 auto;
+}
+.searchBtn{
   margin:4px;
   padding: 6px 8px;
   font-size:18px;
@@ -55,16 +60,18 @@ header h1{
   border-radius: 4px;
   width:200px;
 }
-.search:hover{
+.searchBtn:hover{
   cursor: pointer;
   background-color:#ccc;
   border: 1px solid #ccc;
 }
-
+label{
+  margin-left:5px;
+}
 .SearchInputs{
-  width: 100%;
+  width: 95%;
   display:inline-block;
-  margin:5px;
+  margin:5px 5px 10px 5px;
   padding:7px 10px;
 }
 
@@ -116,3 +123,24 @@ header h1{
   grid-row: 3 / 4;
 
 } */
+
+/* Loading */
+.LoadingIndicator{
+  margin: 15px auto 0 auto;
+  width:600px;
+  /* background-color:red; */
+  border-radius: 5px;
+  border:2px solid gold;
+  text-align: center;
+  padding:20px 0px;
+}
+
+.NoResults{
+  margin: 15px auto 0 auto;
+  width:600px;
+  /* background-color:red; */
+  border-radius: 5px;
+  border:2px solid orangered;
+  text-align: center;
+  padding:20px 0px;
+}

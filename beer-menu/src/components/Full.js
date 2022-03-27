@@ -1,18 +1,28 @@
 import { useEffect, useState } from "react";
 import noimg from '../no-image-available.jpg';
 import Beer from './Beer';
+
 const FullComponent = () => {
     const [beers, setBeers] = useState(null);
     const [isPending, setIsPending] = useState(false);
+    const [BeerSearch, setBeerSearch] = useState(null);
+    const [FoodPairSearch, setFoodPairSearch] = useState(null);
+    const [ABV_GTSearch, setABV_GTSearch] = useState(null);
+    const [ABV_LTSearch, setABV_LTSearch] = useState(null);
+    const [PaginationState, setPaginationState] = useState('1');
+    const [noResults, setNoResults] = useState(false);
     const apiBaseURL="https://api.punkapi.com/v2/beers?per_page=11";
     const beerName="&beer_name=";
     const foodName="&food=";
     const abvGreaterValue="&abv_gt=";
     const abvLessValue="&abv_lt=";
+    const pageing="&page=1";
     let beerValue ="";  
     let foodValue ="";  
     let abvgtValue ="";  
     let abvltValue ="";  
+    let pageNumberVal = "";
+   
     let APIStringBuilder = apiBaseURL;
     
   
@@ -20,40 +30,61 @@ const FullComponent = () => {
         return string.split(search).join(replace);
     }
     function checkBeerValue(){
-        if(beerValue==null || beerValue ==""){
+        if(BeerSearch==null || BeerSearch ==""){
             console.log("beerValue: blank. do nothing");
         }else{
-            APIStringBuilder = APIStringBuilder +beerName+beerValue;
+            APIStringBuilder = APIStringBuilder +beerName+BeerSearch;
             console.log("beerValue: "+beerValue);
             console.log("APIStringBuilder: "+APIStringBuilder);
+            // setBeerSearch(beerValue);
+            console.log("BeerSearchState: "+ BeerSearch);
         }
     }
+     /*
+    
+    const [FoodPairSearch, setFoodPairSearch] = useState(null);
+    const [ABV_GTSearch, setABV_GTSearch] = useState(null);
+    const [ABV_LTSearch, setABV_LTSearch] = useState(null);
+    const [PaginationState, setPaginationState] = useState('1');
+    */ 
     function checkFoodValue(){
-        if(foodValue==null || foodValue ==""){
-            console.log("foodValue: blank. do nothing");
+        if(FoodPairSearch==null || FoodPairSearch ==""){
+            console.log("FoodPairSearch: blank. do nothing");
         }else{
-            APIStringBuilder = APIStringBuilder +foodName+foodValue;
-            console.log("foodValue: "+beerValue);
+            APIStringBuilder = APIStringBuilder +foodName+FoodPairSearch;
+            console.log("FoodPairSearch: "+FoodPairSearch);
             console.log("APIStringBuilder: "+APIStringBuilder);
         }
     }
     function checkABVgtValue(){
-        if(abvgtValue==null || abvgtValue ==""){
-            console.log("abvgtValue: blank. do nothing");
+        if(ABV_GTSearch==null || ABV_GTSearch ==""){
+            console.log("ABV_GTSearch: blank. do nothing");
         }else{
-            APIStringBuilder = APIStringBuilder +abvGreaterValue+abvgtValue;
-            console.log("abvgtValue: "+beerValue);
+            APIStringBuilder = APIStringBuilder +abvGreaterValue+ABV_GTSearch;
+            console.log("ABV_GTSearch: "+ABV_GTSearch);
             console.log("APIStringBuilder: "+APIStringBuilder);
         }
     }
     function checkABVltValue(){
-        if(abvltValue==null || abvltValue ==""){
-            console.log("abvltValue: blank. do nothing");
+        if(ABV_LTSearch==null || ABV_LTSearch ==""){
+            console.log("ABV_LTSearch: blank. do nothing");
         }else{
-            APIStringBuilder = APIStringBuilder +abvLessValue+abvltValue;
-            console.log("abvltValue: "+beerValue);
+            APIStringBuilder = APIStringBuilder +abvLessValue+ABV_LTSearch;
+            console.log("ABV_LTSearch: "+ABV_LTSearch);
             console.log("APIStringBuilder: "+APIStringBuilder);
         }
+    }
+    function fnc_pageing(){
+
+    }
+    function BuildAPI_URL(pgNum){
+
+        // if page 
+        fnc_pageing();
+        checkBeerValue();
+        checkFoodValue();
+        checkABVgtValue();
+        checkABVltValue();
     }
 
     
@@ -66,22 +97,28 @@ const FullComponent = () => {
     // }, [])
 
     const getBeerInputValue = (event)=>{
-        beerValue = replaceAll(event.target.value," ", "_");
-        console.log(beerValue);
+        let newBeerValue = replaceAll(event.target.value," ", "_");
+        setBeerSearch(newBeerValue);
+        console.log("BeerSearch: "+BeerSearch+" newBeerValue: "+newBeerValue);
     };
     const getFoodInputValue = (event)=>{
-        foodValue = event.target.value;
-        console.log(foodValue);
+        let newFoodValue = replaceAll(event.target.value," ", "_");
+        setFoodPairSearch(newFoodValue);
+        console.log("FoodSearch: "+foodName+" newFoodValue: "+newFoodValue);
     };
     const getAbvGTInputValue = (event)=>{
-        abvgtValue = event.target.value;
-        console.log(abvgtValue);
+        let newABV_GtValue = replaceAll(event.target.value," ", "_");
+        setABV_GTSearch(newABV_GtValue);
+        console.log("BeerSearch: "+BeerSearch+" newABV_GtValue: "+newABV_GtValue);
     };
     const getAbvLTInputValue = (event)=>{
-        abvltValue = event.target.value;
-        console.log(abvltValue);
+        let newABV_LtValue = replaceAll(event.target.value," ", "_");
+        setABV_LTSearch(newABV_LtValue);
+        console.log("BeerSearch: "+BeerSearch+" newABV_LtValue: "+newABV_LtValue);
     };
 
+
+   
      
     
 
@@ -95,35 +132,56 @@ const FullComponent = () => {
 
     const  SearchBeers = async() => { 
         setIsPending(true);
-        checkBeerValue();
-        checkFoodValue();
-        checkABVgtValue();
-        checkABVltValue();
+        // let thisthing = document.getElementById('textbox_id').value;
+        // console.log("thisthings id: "+thisthing);
+        BuildAPI_URL();
+        // BuildAPI_URL(pageNumber);
 
-          
+        alert(APIStringBuilder);
+
         console.log("API Query string: "+ APIStringBuilder);
         const res = await fetch(APIStringBuilder);
         const data = await res.json();
+        const dataLength = data.length;
+        console.log(">>>>>>>>>>     DataLength: "+ dataLength);
+        if(dataLength == 11){
+            console.log("##### activat pagination")
+        }
+        /* Check any results came back, and set state to show message to user.
+        */
+        if(dataLength==0){
+            setNoResults(true);
+        }else{
+            setNoResults(false);
+        }
+         
         setBeers(data);
         setIsPending(false);
-
-
+       
+        
         // }   
     }
-
+    
     return ( 
         <div className="searchBox">
             <h2>Search for Beer</h2>
-                <input className="SearchInputs" type="text" placeholder="Beer Name" onChange={getBeerInputValue} />
-                <input className="SearchInputs" type="text" placeholder="Food" onChange={getFoodInputValue}/>
-                <input className="SearchInputs" type="text" placeholder="ABV Greater than" onChange={getAbvGTInputValue}/>
-                <input className="SearchInputs" type="text" placeholder="ABV Less than"  onChange={getAbvLTInputValue}/>
-                <button onClick={SearchBeers} className="search">Search</button>
-                {/* <button onClick={search} className="search">Search</button> */}
-            {/* <Beer /> */}
+            {/* <form action="" id="create-course-form" onSubmit={this.formPreventDefault}> */}
+            <div className="inputContainer">
+                <label>Beer Name:</label>
+                <input id='textbox_id' className="SearchInputs" type="text" placeholder="Example: Buzz" onChange={getBeerInputValue} />
+                <label>Food Pairing:</label>
+                <input className="SearchInputs" type="text" placeholder="Example: Bacon sandwich " onChange={getFoodInputValue}/>
+                <label>Alcohol by volume(ABV) Greater than:</label>
+                <input className="SearchInputs" type="text" placeholder="Example: 4" onChange={getAbvGTInputValue}/>
+                <label>Alcohol by volume(ABV) Less than:</label>
+                <input className="SearchInputs" type="text" placeholder="Example: 2"  onChange={getAbvLTInputValue}/>
+                <button onClick={SearchBeers} className="searchBtn">Search</button>
+            </div>
+            {/* </form> */}
+            
              
-
-            {beers && beers.map(beer => (
+            {/* {this html should be a component recieving props} */}
+            {beers && beers.slice(0, 10).map(beer => (
                 <div className="beer" key={beer.id}>
                     {beer.image_url && <img src={beer.image_url} className="beer-logo" alt={beer.image_url} /> } 
                     {!beer.image_url && <img src={noimg} className="beer-logo" alt="not-found" /> } 
@@ -138,7 +196,8 @@ const FullComponent = () => {
             ))}
 
                 
-            {isPending && <div>loading...</div> } 
+            {isPending && <div className="LoadingIndicator"> Beers Are Pouring...</div> } 
+            {noResults && <div className="NoResults">🥺 404: No beers Found.</div> } 
 
 
         </div>
