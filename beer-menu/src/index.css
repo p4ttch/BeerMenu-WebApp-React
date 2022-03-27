@@ -24,6 +24,74 @@ header h1{
   margin: 0 auto;
 }
 
+
+.content{
+  display: grid;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+  width: 100%;
+  grid-template-columns: 1fr;
+
+}
+
+
 .App-logo{
   max-width: 150px;
 }
+
+/*search form styles*/
+
+.SearchInputs{
+  width: 100%;
+  display:inline-block;
+  margin:5px;
+}
+
+
+/*Beer results*/
+
+.Beers{
+ border-top: 1px solid #ccc;
+ width:100%;
+ padding:10px;
+ margin-top:10px;
+}
+
+.beer{
+  width:100%;
+  display: grid;
+  grid-template-columns: 200px auto;
+  /* grid-template-rows: 1fr 1fr  1fr; */
+  border:1px solid #ccc;
+  border-radius:5px;
+  /* background-color:rgb(231, 230, 230); */
+  margin-bottom:10px;
+
+}
+.beer-logo{
+  padding:25px;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  max-height:150px;
+  justify-self: center;
+  align-self: center;
+}
+.desc-container{
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+/* .beer-name{
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+.beer-abv{
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  
+}
+.beer-desc{
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+
+} */

@@ -1,8 +1,10 @@
 import logo from './logo.png';
 // import './App.css';
 import Navbar from './components/Navbar';
-import Search from './components/Search';
-import Beers from './components/Beers';
+// import Search from './components/Search';
+// import Beers from './components/Beers';
+import Full from './components/Full';
+import Test from './components/Test';
 
 function App() {
   return (
@@ -12,8 +14,9 @@ function App() {
       </header>
       <div className="content">
         <img src={logo} className="App-logo" alt="logo" />
-          <Search />
-          <Beers />
+          <Full />
+          {/* <Test /> */}
+          {/* <Beers /> */}
       </div>
     </div>
   );
