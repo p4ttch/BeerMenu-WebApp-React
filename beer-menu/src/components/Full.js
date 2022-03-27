@@ -3,6 +3,7 @@ import noimg from '../no-image-available.jpg';
 import Beer from './Beer';
 
 const FullComponent = () => {
+    // states to keep search values
     const [beers, setBeers] = useState(null);
     const [isPending, setIsPending] = useState(false);
     const [BeerSearch, setBeerSearch] = useState(null);
@@ -11,75 +12,56 @@ const FullComponent = () => {
     const [ABV_LTSearch, setABV_LTSearch] = useState(null);
     const [PaginationState, setPaginationState] = useState('1');
     const [noResults, setNoResults] = useState(false);
+    // vars to build api string
     const apiBaseURL="https://api.punkapi.com/v2/beers?per_page=11";
     const beerName="&beer_name=";
     const foodName="&food=";
     const abvGreaterValue="&abv_gt=";
     const abvLessValue="&abv_lt=";
     const pageing="&page=1";
-    let beerValue ="";  
-    let foodValue ="";  
-    let abvgtValue ="";  
-    let abvltValue ="";  
-    let pageNumberVal = "";
-   
     let APIStringBuilder = apiBaseURL;
     
-  
+    // replacing empty spaces in searches with _ for api to work
     function replaceAll(string, search, replace) {
         return string.split(search).join(replace);
     }
+    
+    // Functions that build the api url
     function checkBeerValue(){
         if(BeerSearch==null || BeerSearch ==""){
-            console.log("beerValue: blank. do nothing");
+         //   console.log("beerValue: blank. do nothing");
         }else{
             APIStringBuilder = APIStringBuilder +beerName+BeerSearch;
-            console.log("beerValue: "+beerValue);
-            console.log("APIStringBuilder: "+APIStringBuilder);
-            // setBeerSearch(beerValue);
-            console.log("BeerSearchState: "+ BeerSearch);
         }
     }
-     /*
-    
-    const [FoodPairSearch, setFoodPairSearch] = useState(null);
-    const [ABV_GTSearch, setABV_GTSearch] = useState(null);
-    const [ABV_LTSearch, setABV_LTSearch] = useState(null);
-    const [PaginationState, setPaginationState] = useState('1');
-    */ 
     function checkFoodValue(){
         if(FoodPairSearch==null || FoodPairSearch ==""){
-            console.log("FoodPairSearch: blank. do nothing");
+          //  console.log("FoodPairSearch: blank. do nothing");
         }else{
             APIStringBuilder = APIStringBuilder +foodName+FoodPairSearch;
-            console.log("FoodPairSearch: "+FoodPairSearch);
-            console.log("APIStringBuilder: "+APIStringBuilder);
         }
     }
     function checkABVgtValue(){
         if(ABV_GTSearch==null || ABV_GTSearch ==""){
-            console.log("ABV_GTSearch: blank. do nothing");
+            // console.log("ABV_GTSearch: blank. do nothing");
         }else{
             APIStringBuilder = APIStringBuilder +abvGreaterValue+ABV_GTSearch;
-            console.log("ABV_GTSearch: "+ABV_GTSearch);
-            console.log("APIStringBuilder: "+APIStringBuilder);
         }
     }
     function checkABVltValue(){
         if(ABV_LTSearch==null || ABV_LTSearch ==""){
-            console.log("ABV_LTSearch: blank. do nothing");
+            // console.log("ABV_LTSearch: blank. do nothing");
         }else{
             APIStringBuilder = APIStringBuilder +abvLessValue+ABV_LTSearch;
-            console.log("ABV_LTSearch: "+ABV_LTSearch);
-            console.log("APIStringBuilder: "+APIStringBuilder);
         }
     }
+    //TODO: manage pageing
     function fnc_pageing(){
 
     }
+    // Calls all the functions that build the API RUL
     function BuildAPI_URL(pgNum){
-
-        // if page 
+        // if page 1
         fnc_pageing();
         checkBeerValue();
         checkFoodValue();
@@ -87,15 +69,7 @@ const FullComponent = () => {
         checkABVltValue();
     }
 
-    
-    //  useEffect(()=>{
-    //     setTimeout( async ()=>{
-    //         const res = await fetch('https://api.punkapi.com/v2/beers');
-    //         const data = await res.json();
-    //         setBeers(data);
-    //     },2000)
-    // }, [])
-
+ 
     const getBeerInputValue = (event)=>{
         let newBeerValue = replaceAll(event.target.value," ", "_");
         setBeerSearch(newBeerValue);
@@ -116,37 +90,25 @@ const FullComponent = () => {
         setABV_LTSearch(newABV_LtValue);
         console.log("BeerSearch: "+BeerSearch+" newABV_LtValue: "+newABV_LtValue);
     };
-
-
-   
-     
-    
-
-    const SearchData = async() =>{
-        const url = `https://jsonplaceholder.typicode.com/todos/1`
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log(data);
-    }
-    // LoadData();
-
+ 
+    // Function that gets called on main search
     const  SearchBeers = async() => { 
         setIsPending(true);
-        // let thisthing = document.getElementById('textbox_id').value;
-        // console.log("thisthings id: "+thisthing);
         BuildAPI_URL();
         // BuildAPI_URL(pageNumber);
 
+        // specificaly using an alert > consol.log to see the loading section is working
         alert(APIStringBuilder);
 
-        console.log("API Query string: "+ APIStringBuilder);
+        // console.log("API Query string: "+ APIStringBuilder);
         const res = await fetch(APIStringBuilder);
         const data = await res.json();
         const dataLength = data.length;
-        console.log(">>>>>>>>>>     DataLength: "+ dataLength);
+        // console.log(">>>>>>>>>>     DataLength: "+ dataLength);
         if(dataLength == 11){
             console.log("##### activat pagination")
         }
+
         /* Check any results came back, and set state to show message to user.
         */
         if(dataLength==0){
@@ -157,15 +119,11 @@ const FullComponent = () => {
          
         setBeers(data);
         setIsPending(false);
-       
-        
-        // }   
     }
     
     return ( 
         <div className="searchBox">
             <h2>Search for Beer</h2>
-            {/* <form action="" id="create-course-form" onSubmit={this.formPreventDefault}> */}
             <div className="inputContainer">
                 <label>Beer Name:</label>
                 <input id='textbox_id' className="SearchInputs" type="text" placeholder="Example: Buzz" onChange={getBeerInputValue} />
@@ -177,7 +135,6 @@ const FullComponent = () => {
                 <input className="SearchInputs" type="text" placeholder="Example: 2"  onChange={getAbvLTInputValue}/>
                 <button onClick={SearchBeers} className="searchBtn">Search</button>
             </div>
-            {/* </form> */}
             
              
             {/* {this html should be a component recieving props} */}
@@ -198,12 +155,7 @@ const FullComponent = () => {
                 
             {isPending && <div className="LoadingIndicator"> Beers Are Pouring...</div> } 
             {noResults && <div className="NoResults">🥺 404: No beers Found.</div> } 
-
-
         </div>
-
-       
-
      );
 }
  
