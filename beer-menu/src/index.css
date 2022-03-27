@@ -109,22 +109,33 @@ label{
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 }
-/* .beer-name{
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
+ 
+/* Pagination*/
+.pagiContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 600px;
+  margin: 15px auto 0 auto;
+  padding-top:5px;
+  border-top:1px solid #ccc;
+   
 }
-.beer-abv{
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-  
+
+.prevBtn{
+  grid-column: 1 / 2;
 }
-.beer-desc{
+
+.PageInfo{
+  font-size: 20px;
+  margin-top:6px;
   grid-column: 2 / 3;
-  grid-row: 3 / 4;
+  text-align: center;
+}
+.nextBtn{
+  grid-column: 3 / 4;
+}
 
-} */
-
-/* Loading */
+/* Loading + results */
 .LoadingIndicator{
   margin: 15px auto 0 auto;
   width:600px;

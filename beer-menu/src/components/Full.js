@@ -10,7 +10,9 @@ const FullComponent = () => {
     const [FoodPairSearch, setFoodPairSearch] = useState(null);
     const [ABV_GTSearch, setABV_GTSearch] = useState(null);
     const [ABV_LTSearch, setABV_LTSearch] = useState(null);
-    const [PaginationState, setPaginationState] = useState('1');
+    const [PaginationState, setPaginationState] = useState(1);
+    const [PrevPage, setPrevPage] = useState(false);
+    const [NextPage, setNextPage] = useState(false);
     const [noResults, setNoResults] = useState(false);
     // vars to build api string
     const apiBaseURL="https://api.punkapi.com/v2/beers?per_page=11";
@@ -18,14 +20,14 @@ const FullComponent = () => {
     const foodName="&food=";
     const abvGreaterValue="&abv_gt=";
     const abvLessValue="&abv_lt=";
-    const pageing="&page=1";
+    const pageing="&page=";
     let APIStringBuilder = apiBaseURL;
     
     // replacing empty spaces in searches with _ for api to work
     function replaceAll(string, search, replace) {
         return string.split(search).join(replace);
     }
-    
+
     // Functions that build the api url
     function checkBeerValue(){
         if(BeerSearch==null || BeerSearch ==""){
@@ -55,9 +57,10 @@ const FullComponent = () => {
             APIStringBuilder = APIStringBuilder +abvLessValue+ABV_LTSearch;
         }
     }
-    //TODO: manage pageing
+     
     function fnc_pageing(){
-
+        APIStringBuilder = APIStringBuilder +pageing+PaginationState;
+        console.log("func_pging: "+PaginationState);
     }
     // Calls all the functions that build the API RUL
     function BuildAPI_URL(pgNum){
@@ -94,6 +97,11 @@ const FullComponent = () => {
     // Function that gets called on main search
     const  SearchBeers = async() => { 
         setIsPending(true);
+        // let page = 1;
+        // if(nextPg==null){
+        //     console.log("nextPg is null / object");
+        // }
+        // console.log("inside search: "+nextPg);
         BuildAPI_URL();
         // BuildAPI_URL(pageNumber);
 
@@ -106,7 +114,10 @@ const FullComponent = () => {
         const dataLength = data.length;
         // console.log(">>>>>>>>>>     DataLength: "+ dataLength);
         if(dataLength == 11){
-            console.log("##### activat pagination")
+            // console.log("##### activat pagination")
+            setNextPage(true);
+        }else{
+            setNextPage(false);
         }
 
         /* Check any results came back, and set state to show message to user.
@@ -116,9 +127,28 @@ const FullComponent = () => {
         }else{
             setNoResults(false);
         }
-         
+        if(PaginationState>1){
+            setPrevPage(true);
+        }else{
+            setPrevPage(false);
+        }
         setBeers(data);
         setIsPending(false);
+    }
+
+
+    const PagiSearchPrev = async()=>{
+        setPaginationState(PaginationState-1);
+        SearchBeers();
+    }
+    
+    const PagiSearchNext = async()=>{
+        let newstate = PaginationState+1;
+        console.log("newstate: " + newstate);
+        setPaginationState(newstate);
+        // let nextPg = PaginationState+1;
+        console.log("pgstatesetter: " + PaginationState);
+        SearchBeers();
     }
     
     return ( 
@@ -136,7 +166,19 @@ const FullComponent = () => {
                 <button onClick={SearchBeers} className="searchBtn">Search</button>
             </div>
             
-             
+            <div className="pagiContainer">
+                {PrevPage && (
+                    <button onClick={PagiSearchPrev} className="searchBtn prevBtn"> Prev </button>
+                )}
+                {beers && (
+                    <div className="PageInfo">Page: {PaginationState}</div>
+                )}
+
+                {NextPage&& (
+                    <button onClick={PagiSearchNext} className="searchBtn nextBtn">Next</button>
+                )}
+            </div>
+
             {/* {this html should be a component recieving props} */}
             {beers && beers.slice(0, 10).map(beer => (
                 <div className="beer" key={beer.id}>
