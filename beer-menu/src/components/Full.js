@@ -106,7 +106,7 @@ const FullComponent = () => {
         // BuildAPI_URL(pageNumber);
 
         // specificaly using an alert > consol.log to see the loading section is working
-        alert(APIStringBuilder);
+       // alert(APIStringBuilder);
 
         // console.log("API Query string: "+ APIStringBuilder);
         const res = await fetch(APIStringBuilder);
