@@ -38,14 +38,34 @@ header h1{
 
 .App-logo{
   max-width: 150px;
+  margin:0 auto;
 }
 
 /*search form styles*/
+.searchBox h2{
+  text-align: center;
+}
+
+.search{
+  margin:4px;
+  padding: 6px 8px;
+  font-size:18px;
+  background-color:#f3f3f3;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  width:200px;
+}
+.search:hover{
+  cursor: pointer;
+  background-color:#ccc;
+  border: 1px solid #ccc;
+}
 
 .SearchInputs{
   width: 100%;
   display:inline-block;
   margin:5px;
+  padding:7px 10px;
 }
 
 
@@ -63,10 +83,11 @@ header h1{
   display: grid;
   grid-template-columns: 200px auto;
   /* grid-template-rows: 1fr 1fr  1fr; */
-  border:1px solid #ccc;
+  border:1px solid #e6e6e6;
   border-radius:5px;
-  /* background-color:rgb(231, 230, 230); */
+  /* background-color:#f2f2f2; */
   margin-bottom:10px;
+  margin-top:25px;
 
 }
 .beer-logo{
